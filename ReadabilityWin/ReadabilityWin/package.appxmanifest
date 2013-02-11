@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="14514RichardLee.Readabilityunofficial" Version="1.0.0.6" Publisher="CN=9D7EC078-F264-492B-B38B-A10928C121F6" />
+  <Properties>
+    <DisplayName>Readability (unofficial)</DisplayName>
+    <PublisherDisplayName>Richard Lee</PublisherDisplayName>
+    <Logo>images\store-logo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.1</OSMinVersion>
+    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="default.html">
+      <VisualElements DisplayName="Readability (unofficial)" Logo="images\logo.png" SmallLogo="images\small-logo.png" Description="Read comfortably with the unofficial Readability for Windows client" ForegroundText="dark" BackgroundColor="#FFFFFF" ToastCapable="true">
+        <DefaultTile WideLogo="images\wide-logo.png" ShortName="Readability" ShowName="wideLogoOnly" />
+        <SplashScreen Image="images\splash-screen.png" BackgroundColor="#FFFFFF" />
+      </VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

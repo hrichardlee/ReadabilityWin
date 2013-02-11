@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>optionsFlyout</title>
+
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+
+    <link href="optionsFlyout.css" rel="stylesheet" />
+    <script src="optionsFlyout.js"></script>
+</head>
+<body>
+    <div data-win-control="WinJS.UI.SettingsFlyout" id="optionsSettingsFlyout" aria-label="Options settings flyout" data-win-options="{settingsCommandId:'options',width:'narrow'}">
+        <!-- Use either 'win-ui-light' or 'win-ui-dark' depending on the contrast between the header title and background color -->
+        <div class="win-ui-light win-header" style="background-color: #C0C0C0">
+            <!-- Background color reflects app's personality -->
+            <button type="button" onclick="WinJS.UI.SettingsFlyout.show()" class="win-backbutton"></button>
+            <div class="win-label">Options</div>
+            <!--<img src="../images/smallTile-sdk.png" style="position: absolute; right: 40px;"/>-->
+        </div>
+        <div class="win-content">
+            <div class="win-settings-section">
+                <div data-win-control="WinJS.UI.ToggleSwitch" data-win-options="{title: 'Theme Style', labelOff: 'Dark', labelOn: 'Light'}" id="themeStyleSwitch">
+                </div>
+                <label for="textSizeSlider">Text Size:</label>
+                <input id="textSizeSlider" type="range" min="1" max="5" />
+                <button type="button" id="resetCacheButton">Reset Cache</button>
+                <p id="lastSyncedText"></p>
+            </div>
+        </div>
+    </div>
+
+    <div data-win-control="WinJS.UI.SettingsFlyout" aria-label="Privacy flyout" data-win-options="{settingsCommandId:'privacy',width:'narrow'}">
+        <!-- Use either 'win-ui-light' or 'win-ui-dark' depending on the contrast between the header title and background color -->
+        <div class="win-ui-light win-header" style="background-color: #C0C0C0">
+            <!-- Background color reflects app's personality -->
+            <button type="button" onclick="WinJS.UI.SettingsFlyout.show()" class="win-backbutton"></button>
+            <div class="win-label">Privacy</div>
+            <!--<img src="../images/smallTile-sdk.png" style="position: absolute; right: 40px;"/>-->
+        </div>
+        <div class="win-content">
+            <p>This app only specifically transmits information about you to readability.com.</p>
+            <p>This app is not officially affiliated with readability.com. Readability's privacy policy defines what information it stores and how it is used. For more information about readability.com, see <a href="http://readability.com/about/terms/">here</a> and <a href="http://readability.com/faq">here</a>.</p>
+            <p>When this app makes web requests to other sites, incidental information about your computer, such as its IP address is exposed in the same way that information, is exposed in a similar manner as when you browse the web.</p>
+        </div>
+    </div>
+
+</body>
+</html>

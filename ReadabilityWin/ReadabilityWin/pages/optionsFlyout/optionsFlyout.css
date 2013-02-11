@@ -1,0 +1,15 @@
+﻿.optionsFlyout p {
+    margin-left: 120px;
+}
+
+#themeStyleSwitch ::-ms-fill-lower {
+    background-color: #F7F7F7;
+}
+
+#themeStyleSwitch ::-ms-fill-upper {
+    background-color: #292929;
+}
+
+#themeStyleSwitch ::-ms-thumb {
+    background-color: #C0C0C0;
+}

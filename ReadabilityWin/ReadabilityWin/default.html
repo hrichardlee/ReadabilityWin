@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>ReadabilityWin</title>
+
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+
+    <!-- ReadabilityWin references -->
+    <link href="/css/default.css" rel="stylesheet" />
+
+    <script src="/js/errors.js"></script>
+    <script src="/js/sha1.js"></script>
+    <script src="/js/oauth.js"></script>
+    <script src="/js/keys.js"></script>
+    <script src="/js/readabilityAccount.js"></script>
+    <script src="/js/generalLayout.js"></script>
+    <script src="/js/default.js"></script>
+    <script src="/js/navigator.js"></script>
+</head>
+<body>
+    <progress id="mainProgress"></progress>
+    <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: '/pages/home/home.html'}"></div>
+    <div id="appbar" data-win-control="WinJS.UI.AppBar">
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'settingsButton', label:'Change settings', icon:'settings'}"
+            type="button"
+            id="settingsButton"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'logoutButton', label:'Logout', icon:'otheruser'}"
+            type="button"
+            id="logoutButton"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'refreshButton', label:'Refresh', icon:'refresh'}"
+            type="button"
+            id="refreshButton"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'showArchiveButton', label:'Show archived', icon:'placeholder'}"
+            type="button"
+            id="showArchiveButton"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'openWebButton', label:'Open web page', icon:'world'}"
+            type="button"
+            id="openWebButton"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'archiveArticleButton', label:'Archive this Article', icon:'movetofolder'}"
+            type="button"
+            id="archiveArticleButton"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'deleteArticleButton', label:'Delete this Article', icon:'delete'}"
+            type="button"
+            id="deleteArticleButton"></button>
+    </div>
+</body>
+</html>

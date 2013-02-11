@@ -1,0 +1,14 @@
+﻿
+/* these need to override the default color*/
+
+.item-holder .item-excerpt {
+    color: dimgray !important;
+}
+
+.item-holder .item-author {
+    color: dimgray !important;
+}
+
+#loginModalDialog > #loginBox {
+    background-color: white !important;
+}

@@ -1,0 +1,258 @@
+﻿*, body {
+    margin: 0;
+    padding: 0;
+}
+
+.homepage section[role=main] {
+    height: 100%;
+}
+
+#loginModalDialog {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(128, 128, 128, 0.5);
+    display: none;
+}
+
+    #loginModalDialog > #loginBox {
+        position: absolute;
+        top: 50%;
+        margin-top: -150px;
+        width: 100%;
+        height: 300px;
+        background-color: rgb(29, 29, 29);
+    }
+
+        #loginModalDialog > #loginBox > #loginBoxContents {
+            width: 440px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 25px;
+        }
+
+            #loginModalDialog > #loginBox > #loginBoxContents > #signupText {
+                margin-bottom: 1em;
+            }
+
+            #loginModalDialog > #loginBox > #loginBoxContents > #loginErrorText {
+                color: orangered;
+                margin-top: 0.5em;
+            }
+
+            #loginModalDialog > #loginBox > #loginBoxContents > label {
+                float: left;
+                width: 120px;
+                margin-top: 10px;
+            }
+
+            #loginModalDialog > #loginBox > #loginBoxContents > input {
+                width: 300px;
+            }
+
+            #loginModalDialog > #loginBox > #loginBoxContents > button {
+                margin-top: 15px;
+                margin-left: 220px;
+                width: 200px;
+            }
+
+#readingList {
+    height: 100%;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+    #readingList .win-surface {
+        margin-left: 113px;
+        margin-right: 130px;
+    }
+
+    #readingList .win-container {
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+.item-holder {
+    width: 640px;
+}
+
+    .item-holder .item-title {
+        position: absolute;
+        overflow: hidden;
+        left: 185px; /* these are all item-img width + margin */
+        width: 455px; /* this is the remaining width */
+        height: 36px; /*these add up to item-img height */
+        line-height: 36px;
+        font-size: 24px;
+    }
+
+    .item-holder .item-author {
+        position: absolute;
+        left: 185px;
+        width: 455px;
+        top: 36px;
+        height: 20px;
+        line-height: 20px;
+        margin-bottom: 5px;
+        font-size: 14px;
+        vertical-align: top;
+        color: lightgray;
+    }
+
+    .item-holder .item-excerpt {
+        position: absolute;
+        left: 185px;
+        width: 455px;
+        top: 61px;
+        height: 114px;
+        line-height: 20px;
+        font-size: 16px;
+        color: lightgray;
+    }
+
+    .item-holder .item-img {
+        float: left;
+        width: 175px;
+        margin-right: 10px;
+        height: 175px;
+        overflow: hidden;
+    }
+
+
+@media screen and (-ms-view-state: snapped) {
+    #loginModalDialog > #loginBox {
+        margin-top: -160px;
+        height: 320px;
+    }
+
+        #loginModalDialog > #loginBox > #loginBoxContents {
+            margin-left: 20px;
+            margin-right: 20px;
+            width: calc(100% - 40px);
+            position: relative;
+        }
+
+            #loginModalDialog > #loginBox > #loginBoxContents > label {
+                margin-top: 0;
+                float: none;
+                display: block;
+                width: auto;
+            }
+
+            #loginModalDialog > #loginBox > #loginBoxContents > input {
+                width: 100%;
+            }
+
+            #loginModalDialog > #loginBox > #loginBoxContents > button {
+                margin-left: 0;
+                margin-right: 0;
+                margin-top: 10px;
+                float: right;
+            }
+
+    #readingList {
+        margin-left: 0px;
+        margin-bottom: 0px;
+    }
+
+        #readingList .win-surface {
+            margin-left: 0px;
+            margin-right: 0px;
+            width: 100%;
+        }
+
+        #readingList .win-container {
+            margin-bottom: 5px;
+            margin-left: 13px;
+            margin-right: 13px;
+        }
+
+    .item-holder {
+        position: relative;
+        width: 100%;
+    }
+
+        .item-holder .item-title {
+            position: relative;
+            left: auto;
+            width: 100%;
+            height: 22px;
+            line-height: 22px;
+            font-size: 16px;
+        }
+
+        .item-holder .item-author {
+            position: relative;
+            left: auto;
+            width: 100%;
+            top: auto;
+            height: 14px;
+            line-height: 14px;
+            font-size: 12px;
+            padding-bottom: 3px;
+            border-bottom: 1px solid Gainsboro;
+            margin-bottom: 3px;
+        }
+
+        .item-holder .item-excerpt {
+            position: relative;
+            overflow: hidden;
+            left: auto;
+            width: 100%;
+            top: auto;
+            height: 70px;
+            line-height: 14px;
+            font-size: 12px;
+        }
+
+        .item-holder .item-img {
+            display: none;
+        }
+}
+
+@media screen and (-ms-view-state: fullscreen-portrait) {
+    #readingList {
+        margin-bottom: 0px;
+    }
+
+        #readingList .win-surface {
+            margin-left: 0px;
+            margin-right: 0px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        #readingList .win-container {
+            margin-bottom: 5px;
+            margin-right: 25px;
+            margin-left: 93px;
+        }
+
+    .item-holder {
+        position: relative;
+        width: 100%;
+    }
+
+        .item-holder .item-title {
+            left: 185px;
+            width: auto;
+            right: 0px;
+        }
+
+        .item-holder .item-author {
+            left: 185px;
+            width: auto;
+            right: 0px;
+        }
+
+        .item-holder .item-excerpt {
+            left: 185px;
+            width: auto;
+            right: 0px;
+        }
+
+        .item-holder .item-img {
+        }
+}

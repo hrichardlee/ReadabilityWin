@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>homePage</title>
+    <link href="/pages/home/home.css" rel="stylesheet" />
+    <script src="/pages/home/home.js"></script>
+</head>
+<body>
+    <!-- This template is used to display each item in the ListView declared below. -->
+    <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
+        <div class="item-holder">
+            <div class="item-img">
+                <img src="#" data-win-bind="src: leadImageUrl" onload="onImgLoad(this)" />
+            </div>
+            <h4 class="item-title win-type-ellipsis" data-win-bind="textContent: title"></h4>
+            <h6 class="item-author win-type-ellipsis" data-win-bind="textContent: subtitle"></h6>
+            <p class="item-excerpt" data-win-bind="textContent: excerpt"></p>
+        </div>
+    </div>
+
+    <!-- The content that will be loaded and displayed. -->
+    <div class="fragment homepage">
+        <header aria-label="Header content" role="banner">
+            <button class="win-backbutton" aria-label="Back" disabled type="button"></button>
+            <h1 class="titlearea win-type-ellipsis">
+                <span class="pagetitle">Reading List</span>
+            </h1>
+        </header>
+        <section aria-label="Main content" role="main">
+            <div id="readingList" aria-label="List of groups" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'none', layout: {type: WinJS.UI.GridLayout} }"></div>
+
+            <div id="loginModalDialog">
+                <div id="loginBox">
+                    <div id="loginBoxContents">
+                        <h2>Login to Readability</h2>
+                        <p id="signupText">If you don't have an account, <a href="http://readability.com">sign up.</a></p>
+                        <label for="loginUsername">Username: </label>
+                        <input type="text" id="loginUsername" />
+                        <label for="loginPassword">Password: </label>
+                        <input type="password" id="loginPassword" />
+                        <button id="loginButton">Grant access</button>
+                        <div class="clearDiv"></div>
+                        <p id="loginErrorText"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>
