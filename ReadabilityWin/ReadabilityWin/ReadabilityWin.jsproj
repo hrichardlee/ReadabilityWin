@@ -51,9 +51,9 @@
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>ReadabilityWin_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>ReadabilityWin_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <PackageCertificateThumbprint>29D57FCBD429FE4C8E323A0DC71B39D1FBEE3D99</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>EF84A81723DFF6AFA22590AEED9FB01BA7BD2323</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
@@ -94,8 +94,6 @@
     <Content Include="pages\optionsFlyout\optionsFlyout.css" />
     <Content Include="pages\optionsFlyout\optionsFlyout.html" />
     <Content Include="pages\optionsFlyout\optionsFlyout.js" />
-    <None Include="ReadabilityWin_StoreKey.pfx" />
-    <None Include="Package.StoreAssociation.xml" />
     <Content Include="pages\article\article.css" />
     <Content Include="pages\article\article.html" />
     <Content Include="pages\article\article.js" />
