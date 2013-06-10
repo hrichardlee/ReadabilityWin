@@ -9,6 +9,10 @@
         return "There was a network error while " + message + ". Are you connected to the internet?";
     }
 
+    function deletedAlreadyMessage(message) {
+        return "The article " + message + " may have already been deleted.";
+    }
+
     function networkFailureError(message) {
         this.name = "NetworkFailureError";
         this.message = networkFailureMessage(message);
@@ -39,6 +43,7 @@
         readabilityError: readabilityError,
         genericMessage: genericMessage,
         networkFailureMessage: networkFailureMessage,
+        deletedAlreadyMessage: deletedAlreadyMessage,
         diskError: diskError
     });
 })()

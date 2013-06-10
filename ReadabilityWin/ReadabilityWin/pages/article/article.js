@@ -145,24 +145,24 @@
             var call = unarchive ? ReadabilityAccount.OAuthCall(url, "POST", "archive=0", "access", [["archive", "0"]], headers)
                         : ReadabilityAccount.OAuthCall(url, "POST", "archive=1", "access", [["archive", "1"]], headers);
             call.done(function (xhr) {
-                    if (xhr.status == 200) {
-                        GeneralLayout.hideProgress();
-                        GeneralLayout.textToast("The article \"" + currentArticle.title + "\" has been " + archivedText + ".");
-                        ReadabilityAccount.archiveLocally(currentArticle.bookmarkId, unarchive)
-                            .done(function () {
-                                var archiveButton = document.getElementById("archiveArticleButton").winControl;
-                                archiveButton.label = unarchive ? "Archive this article" : "Unarchive this article";
-                                archiveButton.icon = unarchive ? "movetofolder" : "undo";
+                if (xhr.status == 200) {
+                    GeneralLayout.hideProgress();
+                    GeneralLayout.textToast("The article \"" + currentArticle.title + "\" has been " + archivedText + ".");
+                    ReadabilityAccount.archiveLocally(currentArticle.bookmarkId, unarchive)
+                        .done(function () {
+                            var archiveButton = document.getElementById("archiveArticleButton").winControl;
+                            archiveButton.label = unarchive ? "Archive this article" : "Unarchive this article";
+                            archiveButton.icon = unarchive ? "movetofolder" : "undo";
 
-                                archived = !archived;
-                            }, function (err) {
-                                ReadabilityAccount.recordSynced(false);
-                            });
-                        Windows.UI.Notifications.TileUpdateManager.createTileUpdaterForApplication().clear();
-                    } else {
-                        throw new Errors.readabilityError(archivingText + " the article \"" + currentArticle.title + "\"");
-                    }
-                },
+                            archived = !archived;
+                        }, function (err) {
+                            ReadabilityAccount.recordSynced(false);
+                        });
+                    Windows.UI.Notifications.TileUpdateManager.createTileUpdaterForApplication().clear();
+                } else {
+                    throw new Errors.readabilityError(archivingText + " the article \"" + currentArticle.title + "\"");
+                }
+            },
                 function (err) {
                     GeneralLayout.hideProgress();
                     ReadabilityAccount.recordSynced(false);
@@ -180,25 +180,27 @@
             GeneralLayout.showProgress();
             ReadabilityAccount.OAuthCall(url, "DELETE").done(
                 function (xhr) {
-                    if (xhr.status == 200) {
-                        GeneralLayout.hideProgress();
-                        GeneralLayout.textToast("The article \"" + currentArticle.title + "\" has been deleted.");
-                        ReadabilityAccount.archiveLocally(currentArticle.bookmarkId)
-                            .done(function () {
-                            }, function (err) {
-                                ReadabilityAccount.recordSynced(false);
-                            });
-                        Windows.UI.Notifications.TileUpdateManager.createTileUpdaterForApplication().clear();
-                    } else {
-                        throw new Errors.readabilityError("deleting the article \"" + currentArticle.title + "\"");
-                    }
+                    GeneralLayout.hideProgress();
+                    GeneralLayout.textToast("The article \"" + currentArticle.title + "\" has been deleted.");
+                    ReadabilityAccount.archiveLocally(currentArticle.bookmarkId)
+                        .done(function () {
+                        }, function (err) {
+                            ReadabilityAccount.recordSynced(false);
+                        });
+                    Windows.UI.Notifications.TileUpdateManager.createTileUpdaterForApplication().clear();
                 },
                 function (err) {
                     GeneralLayout.hideProgress();
                     ReadabilityAccount.recordSynced(false);
+
                     var toastText = Errors.genericMessage("deleting the article \"" + currentArticle.title + "\"");
                     if (err instanceof Errors.readabilityError) toastText = err.message;
-                    else if (err instanceof XMLHttpRequest) toastText = Errors.networkFailureMessage("deleting the article \"" + currentArticle.title + "\"");
+                    else if (err instanceof XMLHttpRequest) {
+                        if (err.status === 404)
+                            toastText = Errors.deletedAlreadyMessage(currentArticle.title);
+                        else
+                            toastText = Errors.networkFailureMessage("deleting the article \"" + currentArticle.title + "\"");
+                    }
 
                     GeneralLayout.textToast(toastText, true);
                 });
