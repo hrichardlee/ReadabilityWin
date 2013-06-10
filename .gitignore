@@ -5,6 +5,10 @@ Thumbs.db
 *.user
 *.suo
 *.sln.docstates
+*.sdf
+*.opensdf
+[Dd]ebug/
+ipch/
 [Oo]bj/
 [Bb]in/
 [Bb]ld/
