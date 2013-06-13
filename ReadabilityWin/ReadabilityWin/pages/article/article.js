@@ -127,6 +127,7 @@
             GeneralLayout.saveScrollState(document.getElementById("contentSection"));
             GeneralLayout.setOnTextSizeChanged(document.getElementById("content"));
             GeneralLayout.displayTextSize(document.getElementById("content"));
+            GeneralLayout.displayTextFont(document.getElementById("content"));
         },
 
         openWeb: function () {

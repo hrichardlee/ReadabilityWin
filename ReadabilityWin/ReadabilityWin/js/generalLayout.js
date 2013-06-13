@@ -113,16 +113,35 @@
         WinJS.Application.sessionState.scrollState = null;
     }
 
+    function setTextFont(value) {
+        ReadabilityAccount.editState("fontFamily", value);
+        if (onFontFamilyChanged) onFontFamilyChanged();
+    }
+
+    function getFontFamily() {
+        var savedFont = ReadabilityAccount.getState("fontFamily");
+        if (!savedFont) {
+            savedFont = "Segoe";
+            ReadabilityAccount.editState("fontFamily", savedFont);
+        }
+        return savedFont;
+    }
+
     function setTextSize(value) {
         ReadabilityAccount.editState("textSize", value);
         if (onTextSizeChanged) onTextSizeChanged();
     }
 
     var onTextSizeChanged;
+    var onFontFamilyChanged;
 
     function setOnTextSizeChanged(domEl) {
         onTextSizeChanged = function () {
             displayTextSize(domEl);
+        }
+
+        onFontFamilyChanged = function () {
+            displayTextFont(domEl);
         }
     }
 
@@ -149,6 +168,10 @@
             domEl.style["font-size"] = cssName;
     }
 
+    function displayTextFont(domEl) {
+        domEl.style.fontFamily = getFontFamily();
+    }
+
     function getTextSize() {
         return ReadabilityAccount.getState("textSize") || 2; //hardcoded default
     }
@@ -168,6 +191,9 @@
         setTextSize: setTextSize,
         displayTextSize: displayTextSize,
         getTextSize: getTextSize,
-        setOnTextSizeChanged: setOnTextSizeChanged
+        setOnTextSizeChanged: setOnTextSizeChanged,
+        displayTextFont: displayTextFont,
+        setTextFont: setTextFont,
+        getFontFamily: getFontFamily
     });
 })()

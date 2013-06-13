@@ -28,6 +28,25 @@
             textSizeSlider.onchange = function (e) {
                 GeneralLayout.setTextSize(textSizeSlider.value, document.getElementById("contentSection"));
             }
+
+            var enumerator = new FontEnumeration.FontEnumerator();
+            var fonts = enumerator.listSystemFonts();
+            fonts = Array.prototype.slice.call(fonts, 0);
+            fonts.sort();
+
+            var fontSelector = document.getElementById("fontFamilySelector");
+            for (var i = 0; i < fonts.length; i++) {
+                var optionEl = document.createElement("option");
+                optionEl.setAttribute("value", fonts[i]);
+                optionEl.text = fonts[i];
+                fontSelector.appendChild(optionEl);
+            }
+
+            fontSelector.value = GeneralLayout.getFontFamily();
+
+            fontSelector.onchange = function (e) {
+                GeneralLayout.setTextFont(document.getElementById("fontFamilySelector").value);
+            }
         },
 
         toggleThemeStyle: function (e) {
@@ -36,7 +55,7 @@
 
         resetCache: function (e) {
             resetCacheButton.disabled = true;
-            
+
             // first, go to the home screen
             ReadabilityAccount.deleteData()
                 .done(function () {
