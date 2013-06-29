@@ -7,23 +7,21 @@
     var bookmarksUrl = apiRootUrl + "bookmarks";
 
     // Private variables
-    var requestTokenEndpoint = apiRootUrl + "oauth/request_token/";
-    var accessTokenEndpoint = apiRootUrl + "oauth/access_token/";
-    var authorizeUrl = apiRootUrl + "oauth/authorize/";
 
-    var callbackUrl = "http://readability.com/";
+    var _accessTokenEndpoint = apiRootUrl + "oauth/access_token/";
 
-    var leadImagesFolder = "readability-lead-images";
-    var bookmarkFolderPrefix = "readability-art-";
+    var _leadImagesFolder = "readability-lead-images";
+    var _bookmarkFolderPrefix = "readability-art-";
 
-    var oauthRequestToken = "";
-    var oauthRequestSecret = "";
+    var _oauthRequestToken = "";
+    var _oauthRequestSecret = "";
 
-    var articlePromises = {};
-    var bookmarksData = {};
+    var _articlePromises = {};
+    var _bookmarksData = {};
 
     // All state that needs to roam gets put here
     var stateBag = {};
+
 
     ////
     //// Utility functions
@@ -44,40 +42,6 @@
         return toReturn;
     }
 
-    ////
-    //// Authentication
-
-    // Returns a Promise<bool>. True means that we can continue, false means that we need to try again,
-    // and an error means we should have been able to get tokens but we couldn't
-    function login(username, password) {
-        return OAuthCall(accessTokenEndpoint, "POST", "", "none",
-                [["x_auth_username", username],
-                ["x_auth_password", password],
-                ["x_auth_mode", "client_auth"]])
-            .then(function (xhr) {
-                var returnedParams = _parseQueryString(xhr.responseText);
-                if (!returnedParams.hasOwnProperty("oauth_token") || !returnedParams.hasOwnProperty("oauth_token_secret"))
-                    err("Bad params error"); // TODO Fix this?
-
-                stateBag.oauthAccessToken = returnedParams.oauth_token;
-                stateBag.oauthAccessSecret = returnedParams.oauth_token_secret;
-
-                _saveState();
-            });
-    }
-
-    function isAuthorized() {
-        return stateBag.oauthAccessSecret && stateBag.oauthAccessToken;
-    }
-
-    // returns nothing
-    function logout() {
-        oauthRequestSecret = "";
-        oauthRequestToken = "";
-        _saveState();
-        return deleteData(true);
-    }
-
     // Returns an xhr promise
     // url and method are required
     // params must be in the form [[name, value], ...], default is no extra params.
@@ -96,8 +60,8 @@
                 tokenSecret = "";
                 break;
             case "request":
-                tokenSecret = oauthRequestSecret;
-                params.push(["oauth_token", oauthRequestToken]);
+                tokenSecret = _oauthRequestSecret;
+                params.push(["oauth_token", _oauthRequestToken]);
                 break;
             case "access":
                 tokenSecret = stateBag.oauthAccessSecret;
@@ -137,12 +101,45 @@
         });
     }
 
+    ////
+    //// Authentication
+
+    // Returns a Promise<bool>. True means that we can continue, false means that we need to try again,
+    // and an error means we should have been able to get tokens but we couldn't
+    function login(username, password) {
+        return OAuthCall(_accessTokenEndpoint, "POST", "", "none",
+                [["x_auth_username", username],
+                ["x_auth_password", password],
+                ["x_auth_mode", "client_auth"]])
+            .then(function (xhr) {
+                var returnedParams = _parseQueryString(xhr.responseText);
+                if (!returnedParams.hasOwnProperty("oauth_token") || !returnedParams.hasOwnProperty("oauth_token_secret"))
+                    err("Bad params error"); // TODO Fix this?
+
+                stateBag.oauthAccessToken = returnedParams.oauth_token;
+                stateBag.oauthAccessSecret = returnedParams.oauth_token_secret;
+
+                _saveState();
+            });
+    }
+
+    function isAuthorized() {
+        return stateBag.oauthAccessSecret && stateBag.oauthAccessToken;
+    }
+
+    // returns nothing
+    function logout() {
+        _oauthRequestSecret = "";
+        _oauthRequestToken = "";
+        _saveState();
+        return deleteData(true);
+    }
 
 
     ////
-    //// Functionality
+    //// Functionality: Loading bookmarks and articles, archiving
 
-    // sets the bookmarksData private variable and also returns Promise<bookmarksData>
+    // sets the _bookmarksData private variable and also returns Promise<bookmarksData>
     // returns a Promise<bookmarksData, Promise<leadImagesOps>, Promise<allOps>}>
     function getBookmarks(refresh) {
         if (refresh)
@@ -151,7 +148,7 @@
             return _loadData()
                 .then(function () { // returning successfully means we got an object
                     return WinJS.Promise.wrap({
-                        bookmarksData: (bookmarksData),
+                        bookmarksData: (_bookmarksData),
                         leadImagesPromise: WinJS.Promise.wrap("alreadyReady"),
                         allOpsPromise: WinJS.Promise.wrap(null)
                     });
@@ -163,18 +160,18 @@
 
     function _downloadBookmarks() {
         return _downloadBookmarksHelper().then(function (allBookmarks) {
-            bookmarksData = allBookmarks;
+            _bookmarksData = allBookmarks;
 
             var saveDataPromise = _saveData();
-            var leadImagesPromise = _downloadLeadImages(bookmarksData);
+            var leadImagesPromise = _downloadLeadImages(_bookmarksData);
             var articlesPromise = _downloadArticles()
                 .then(function () {
-                    _cleanRemovedArticles(bookmarksData)
+                    _cleanRemovedArticles(_bookmarksData)
                 });
 
             var allOpsPromise = WinJS.Promise.join([saveDataPromise, leadImagesPromise, articlesPromise]);
             return {
-                bookmarksData: bookmarksData,
+                bookmarksData: _bookmarksData,
                 leadImagesPromise: leadImagesPromise,
                 allOpsPromise: allOpsPromise
             };
@@ -206,7 +203,7 @@
                             leadImageSrc: b.article.lead_image_url,
                             leadImageUrl: b.article.lead_image_url
                                 ? ("ms-appdata:///local/"
-                                    + leadImagesFolder + "/"
+                                    + _leadImagesFolder + "/"
                                     + _filenameFromSrc(b.article.lead_image_url))
                                 : "/images/placeholder.png",
                             excerpt: _unescapeUnicode(b.article.excerpt),
@@ -239,7 +236,7 @@
     
     function _downloadLeadImages(bookmarksData) {
         return Windows.Storage.ApplicationData.current.localFolder.createFolderAsync(
-            leadImagesFolder,
+            _leadImagesFolder,
             Windows.Storage.CreationCollisionOption.openIfExists
         ).then(function (folder) {
             var leadImageWritingPromises = bookmarksData.filter(function (b) {
@@ -282,14 +279,14 @@
     }
 
     function _getFolderFromBookmark(bookmarkId) {
-        return bookmarkFolderPrefix + bookmarkId;
+        return _bookmarkFolderPrefix + bookmarkId;
     }
 
     // returns a promise<html content>. throws a disk error only if we don't have the promise and we look on disk and can't find it
     function getArticleContent(bookmarkId) {
-        if (articlePromises.hasOwnProperty(bookmarkId)) {
+        if (_articlePromises.hasOwnProperty(bookmarkId)) {
             // if we still have the promise, return that
-            return articlePromises[bookmarkId];
+            return _articlePromises[bookmarkId];
         } else {
             // if we don't have the promise, check the file on disk
             return Windows.Storage.ApplicationData.current.localFolder.getFolderAsync(_getFolderFromBookmark(bookmarkId))
@@ -329,7 +326,7 @@
     // requires call to getBookmarks first
     // returns a promise that finishes when everything is done
     function _downloadArticles() {
-        var writingPromisesArray = bookmarksData.map(function (b) {
+        var writingPromisesArray = _bookmarksData.map(function (b) {
             var url = rootUrl + b.articleHref;
             var folderName = _getFolderFromBookmark(b.bookmarkId);
 
@@ -360,7 +357,7 @@
                     });
 
                 // store the content promise--this is all we return at first
-                articlePromises[b.bookmarkId] = modContentPromise;
+                _articlePromises[b.bookmarkId] = modContentPromise;
 
                 // returns a joined promise for writing all the images
                 var imgPromises = origContentPromise
@@ -410,6 +407,19 @@
         return WinJS.Promise.join(writingPromisesArray);
     }
 
+    function archiveLocally(currBookmarkId, unarchive) {
+        _bookmarksData
+            .filter(function (b) {
+                return b.bookmarkId === currBookmarkId;
+            })
+            .forEach(function (b) {
+                b.hide = !unarchive;
+            });
+        return _saveData();
+        // this just hides the bookmark -- all the data is still there, but will get removed next time
+    }
+
+
     ////
     //// State
 
@@ -445,7 +455,7 @@
             "readabilityBookmarksData.json",
             Windows.Storage.CreationCollisionOption.replaceExisting
         ).then(function (file) {
-            Windows.Storage.FileIO.writeTextAsync(file, JSON.stringify(bookmarksData));
+            Windows.Storage.FileIO.writeTextAsync(file, JSON.stringify(_bookmarksData));
         });
     }
 
@@ -456,7 +466,7 @@
                 return Windows.Storage.FileIO.readTextAsync(file);
             })
             .then(function (fileContents) {
-                bookmarksData = JSON.parse(fileContents);
+                _bookmarksData = JSON.parse(fileContents);
             });
     }
 
@@ -480,7 +490,7 @@
                     deleteFilePromises.push(
                         file.deleteAsync().then(function(){
                         }, function (err) {
-                            debugger;
+                            // debugger;
                             // some times files just won't delete themselves...
                         })
                     );
@@ -506,18 +516,6 @@
         return WinJS.Promise.join([filePromises, folderPromises]);
     }
 
-    function archiveLocally(currBookmarkId, unarchive) {
-        bookmarksData
-            .filter(function (b) {
-                return b.bookmarkId === currBookmarkId;
-            })
-            .forEach(function (b) {
-                b.hide = !unarchive;
-            });
-        return _saveData();
-        // this just hides the bookmark -- all the data is still there, but will get removed next time
-    }
-
     function recordSynced(success) {
         editState("lastSynced", { success: success, time: new Date() });
     }
@@ -528,13 +526,14 @@
         apiRootUrl: apiRootUrl,
         bookmarksUrl: bookmarksUrl,
 
+        // Utility
+        OAuthCall: OAuthCall,
+
         // Authentication
         login: login,
         isAuthorized: isAuthorized,
         logout: logout,
 
-        // Calls
-        OAuthCall: OAuthCall,
         // Functionality
         getBookmarks: getBookmarks,
         getArticleContent: getArticleContent,
@@ -544,9 +543,7 @@
         loadState: loadState,
         editState: editState,
         getState: getState,
-
-        recordSynced: recordSynced,
-
-        deleteData: deleteData
+        deleteData: deleteData,
+        recordSynced: recordSynced
     });
 })()
