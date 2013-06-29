@@ -90,9 +90,8 @@
             this.setAppBar();
 
             GeneralLayout.renderTextSize(document.getElementById("content"));
-            GeneralLayout.renderTextFont(document.getElementById("content"));
             GeneralLayout.registerForTextSizeChanged(document.getElementById("content"));
-            GeneralLayout.registerForTextFontChanged(document.getElementById("content"));
+            GeneralLayout.renderTextFont();
 
             GeneralLayout.createArticleTileNotification(currentArticle.title, currentArticle.leadImageUrl);
         },

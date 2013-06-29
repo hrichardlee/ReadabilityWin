@@ -169,6 +169,8 @@
     var _onTextSizeChanged;
     var _onFontFamilyChanged;
 
+    var _defaultFontFamily = "Cambria";
+
     function getTextSize() {
         return ReadabilityAccount.getState("textSize") || 2; //hardcoded default
     }
@@ -176,7 +178,7 @@
     function getTextFont() {
         var savedFont = ReadabilityAccount.getState("fontFamily");
         if (!savedFont) {
-            savedFont = "Segoe";
+            savedFont = _defaultFontFamily;
             ReadabilityAccount.editState("fontFamily", savedFont);
         }
         return savedFont;
@@ -190,17 +192,13 @@
     function setTextFont(value) {
         ReadabilityAccount.editState("fontFamily", value);
         if (_onFontFamilyChanged) _onFontFamilyChanged();
+
+        renderTextFont();
     }
 
     function registerForTextSizeChanged(domEl) {
         _onTextSizeChanged = function () {
             renderTextSize(domEl);
-        }
-    }
-
-    function registerForTextFontChanged(domEl) {
-        _onFontFamilyChanged = function () {
-            renderTextFont(domEl);
         }
     }
 
@@ -227,8 +225,8 @@
             domEl.style["font-size"] = cssName;
     }
 
-    function renderTextFont(domEl) {
-        domEl.style.fontFamily = getTextFont();
+    function renderTextFont() {
+        document.getElementsByTagName("body")[0].style.fontFamily = getTextFont();
     }
 
 
@@ -265,7 +263,6 @@
         getTextSize: getTextSize,
         getTextFont: getTextFont,
 
-        registerForTextSizeChanged: registerForTextSizeChanged,
-        registerForTextFontChanged: registerForTextFontChanged
+        registerForTextSizeChanged: registerForTextSizeChanged
     });
 })()

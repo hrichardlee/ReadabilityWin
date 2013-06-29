@@ -44,6 +44,8 @@ function onImgLoad(imgEl) {
             }
 
             Windows.UI.Notifications.TileUpdateManager.createTileUpdaterForApplication().clear();
+
+            GeneralLayout.renderTextFont();
         },
 
         showLogin: function () {
