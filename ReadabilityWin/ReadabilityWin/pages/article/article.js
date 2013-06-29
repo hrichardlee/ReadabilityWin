@@ -62,11 +62,9 @@
 
     WinJS.UI.Pages.define("/pages/article/article.html", {
         ready: function (element, options) {
+            archived = false;
             currentArticle = options.articleSummary;
-
             document.getElementById("pageTitle").innerText = currentArticle.title;
-
-            GeneralLayout.renderThemeStyle();
 
             GeneralLayout.showProgress();
             ReadabilityAccount.getArticleContent(currentArticle.bookmarkId)
@@ -88,51 +86,31 @@
                     }
                 });
 
-            var appbar = document.getElementById("appbar");
-            appbar.winControl.hideCommands(["logoutButton", "showArchiveButton", "refreshButton"], false);
-            appbar.winControl.showCommands(["openWebButton", "archiveArticleButton", "deleteArticleButton", "settingsButton"], false);
-            document.getElementById("openWebButton").onclick = this.openWeb.bind(this);
-            document.getElementById("archiveArticleButton").onclick = this.archiveArticle.bind(this);
-            document.getElementById("deleteArticleButton").onclick = this.deleteArticle.bind(this);
-            document.getElementById("settingsButton").onclick = function (e) {
-                WinJS.UI.SettingsFlyout.showSettings("optionsSettingsFlyout", "/pages/optionsFlyout/optionsFlyout.html");
-            }
+            GeneralLayout.renderThemeStyle();
+            this.setAppBar();
 
-            archived = false;
-            document.getElementById("archiveArticleButton").winControl.label = "Archive this article";
+            GeneralLayout.renderTextSize(document.getElementById("content"));
+            GeneralLayout.renderTextFont(document.getElementById("content"));
+            GeneralLayout.registerForTextSizeChanged(document.getElementById("content"));
+            GeneralLayout.registerForTextFontChanged(document.getElementById("content"));
 
-            var notif = Windows.UI.Notifications;
-            var tileXml = notif.TileUpdateManager.getTemplateContent(
-                notif.TileTemplateType.tileWideImageAndText01);
-            tileXml.getElementsByTagName("text")[0].appendChild(
-                tileXml.createTextNode(currentArticle.title));
-            tileXml.getElementsByTagName("image")[0].setAttribute(
-                "src", currentArticle.leadImageUrl);
-            tileXml.getElementsByTagName("image")[0].setAttribute(
-                "alt", "Article lead image");
-            var squareTileXml = notif.TileUpdateManager.getTemplateContent(
-                notif.TileTemplateType.tileSquareImage);
-            squareTileXml.getElementsByTagName("image")[0].setAttribute(
-                "src", currentArticle.leadImageUrl);
-            squareTileXml.getElementsByTagName("image")[0].setAttribute(
-                "alt", "Article lead image");
-            var node = tileXml.importNode(squareTileXml.getElementsByTagName("binding")[0], true);
-            tileXml.getElementsByTagName("visual")[0].appendChild(node);
-            var tileNotif = new notif.TileNotification(tileXml);
-            var currentTime = new Date();
-            tileNotif.expirationTime = new Date(currentTime.getTime() + 3 * 24 * 60 * 1000);
-            notif.TileUpdateManager.createTileUpdaterForApplication().update(tileNotif);
-
-
-            GeneralLayout.saveScrollState(document.getElementById("contentSection"));
-            GeneralLayout.setOnTextSizeChanged(document.getElementById("content"));
-            GeneralLayout.displayTextSize(document.getElementById("content"));
-            GeneralLayout.displayTextFont(document.getElementById("content"));
+            GeneralLayout.createArticleTileNotification(currentArticle.title, currentArticle.leadImageUrl);
         },
 
-        openWeb: function () {
-            window.open(currentArticle.fullUrl, "_blank");
-            window.focus();
+        setAppBar: function () {
+            GeneralLayout.setAppBar({
+                "openWebButton": function () {
+                    window.open(currentArticle.fullUrl, "_blank");
+                    window.focus();
+                },
+                "archiveArticleButton": this.archiveArticle.bind(this),
+                "deleteArticleButton": this.deleteArticle.bind(this),
+                "settingsButton": function (e) {
+                    WinJS.UI.SettingsFlyout.showSettings("optionsSettingsFlyout", "/pages/optionsFlyout/optionsFlyout.html");
+                }
+            });
+
+            GeneralLayout.setArchiveButton(true);
         },
 
         archiveArticle: function () {
@@ -151,10 +129,7 @@
                     GeneralLayout.textToast("The article \"" + currentArticle.title + "\" has been " + archivedText + ".");
                     ReadabilityAccount.archiveLocally(currentArticle.bookmarkId, unarchive)
                         .done(function () {
-                            var archiveButton = document.getElementById("archiveArticleButton").winControl;
-                            archiveButton.label = unarchive ? "Archive this article" : "Unarchive this article";
-                            archiveButton.icon = unarchive ? "movetofolder" : "undo";
-
+                            GeneralLayout.setArchiveButton(unarchive);
                             archived = !archived;
                         }, function (err) {
                             ReadabilityAccount.recordSynced(false);

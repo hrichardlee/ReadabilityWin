@@ -1,9 +1,12 @@
 ﻿(function () {
     "use strict";
 
+    ////
+    //// Theme Styles
+
     var themeStyles = { dark: "dark", light: "light" };
 
-    var lightSheets = { "/pages/home/home.html": "/pages/home/homeLight.css" };
+    var _lightSheets = { "/pages/home/home.html": "/pages/home/homeLight.css" };
 
     function toggleThemeStyle() {
         var themeStyle = Windows.Storage.ApplicationData.current.roamingSettings.values["themeStyle"] || themeStyles.dark;
@@ -30,8 +33,8 @@
             darklink.setAttribute("href", lighthref);
 
         // if they've specified a light css
-        if (lightSheets.hasOwnProperty(WinJS.Navigation.location)) {
-            var lightStylesheetHref = lightSheets[WinJS.Navigation.location];
+        if (_lightSheets.hasOwnProperty(WinJS.Navigation.location)) {
+            var lightStylesheetHref = _lightSheets[WinJS.Navigation.location];
             var lightStylesheetLink = _cssTagFromHref(lightStylesheetHref);
             if (lightStylesheetLink && getThemeStyle() === themeStyles.dark) {
                 lightStylesheetLink.parentNode.removeChild(lightStylesheetLink);
@@ -50,6 +53,8 @@
     }
 
     
+    ////
+    //// Utility display functions
 
     function textToast(msg, isError) {
         var notif = Windows.UI.Notifications;
@@ -59,6 +64,23 @@
 
         var toast = new notif.ToastNotification(toastXml);
         notif.ToastNotificationManager.createToastNotifier().show(toast);
+    }
+
+    function createArticleTileNotification(articleTitle, imgUrl) {
+        var notif = Windows.UI.Notifications;
+        var tileXml = notif.TileUpdateManager.getTemplateContent(notif.TileTemplateType.tileWideImageAndText01);
+        tileXml.getElementsByTagName("text")[0].appendChild(tileXml.createTextNode(articleTitle));
+        tileXml.getElementsByTagName("image")[0].setAttribute("src", imgUrl);
+        tileXml.getElementsByTagName("image")[0].setAttribute("alt", "Article lead image");
+        var squareTileXml = notif.TileUpdateManager.getTemplateContent(notif.TileTemplateType.tileSquareImage);
+        squareTileXml.getElementsByTagName("image")[0].setAttribute("src", imgUrl);
+        squareTileXml.getElementsByTagName("image")[0].setAttribute("alt", "Article lead image");
+        var node = tileXml.importNode(squareTileXml.getElementsByTagName("binding")[0], true);
+        tileXml.getElementsByTagName("visual")[0].appendChild(node);
+        var tileNotif = new notif.TileNotification(tileXml);
+        var currentTime = new Date();
+        tileNotif.expirationTime = new Date(currentTime.getTime() + 3 * 24 * 60 * 1000);
+        notif.TileUpdateManager.createTileUpdaterForApplication().update(tileNotif);
     }
 
     function showProgress() {
@@ -88,6 +110,33 @@
         return "" + (time.getMonth() + 1) + "/" + time.getDate() + "/" + time.getFullYear() + " "
             + hours + ":" + minutes + " " + ampm;
     }
+    
+    var _allButtons = ["settingsButton", "logoutButton", "refreshButton", "openWebButton", "archiveArticleButton", "deleteArticleButton"];
+    // configures the appbar to show buttons. buttons should be { <buttonId>: <buttonFunctionOnClick> }
+    function setAppBar(buttons) {
+        var appbar = document.getElementById("appbar");
+        var buttonsToShow = [];
+        for (var button in buttons) {
+            if (buttons.hasOwnProperty(button)) {
+                buttonsToShow.push(button);
+                document.getElementById(button).onclick = buttons[button];
+            }
+        }
+        var buttonsToHide = _allButtons.filter(function(x) { return !(buttonsToShow.indexOf(x) > -1); });
+        appbar.winControl.hideCommands(buttonsToHide, false);
+        appbar.winControl.showCommands(buttonsToShow, false);
+    }
+    
+    // call this function with true to set the appbar button to archive
+    function setArchiveButton(toArchive) {
+        var archiveButton = document.getElementById("archiveArticleButton").winControl;
+        archiveButton.label = toArchive ? "Archive this article" : "Unarchive this article";
+        archiveButton.icon = toArchive ? "movetofolder" : "undo";
+    }
+
+
+    ////
+    //// Scroll state
 
     function saveScrollState(domEl) {
         domEl.onscroll = function () {
@@ -113,12 +162,18 @@
         WinJS.Application.sessionState.scrollState = null;
     }
 
-    function setTextFont(value) {
-        ReadabilityAccount.editState("fontFamily", value);
-        if (onFontFamilyChanged) onFontFamilyChanged();
+
+    ////
+    //// Text settings
+
+    var _onTextSizeChanged;
+    var _onFontFamilyChanged;
+
+    function getTextSize() {
+        return ReadabilityAccount.getState("textSize") || 2; //hardcoded default
     }
 
-    function getFontFamily() {
+    function getTextFont() {
         var savedFont = ReadabilityAccount.getState("fontFamily");
         if (!savedFont) {
             savedFont = "Segoe";
@@ -129,23 +184,27 @@
 
     function setTextSize(value) {
         ReadabilityAccount.editState("textSize", value);
-        if (onTextSizeChanged) onTextSizeChanged();
+        if (_onTextSizeChanged) _onTextSizeChanged();
     }
 
-    var onTextSizeChanged;
-    var onFontFamilyChanged;
+    function setTextFont(value) {
+        ReadabilityAccount.editState("fontFamily", value);
+        if (_onFontFamilyChanged) _onFontFamilyChanged();
+    }
 
-    function setOnTextSizeChanged(domEl) {
-        onTextSizeChanged = function () {
-            displayTextSize(domEl);
-        }
-
-        onFontFamilyChanged = function () {
-            displayTextFont(domEl);
+    function registerForTextSizeChanged(domEl) {
+        _onTextSizeChanged = function () {
+            renderTextSize(domEl);
         }
     }
 
-    function displayTextSize(domEl) {
+    function registerForTextFontChanged(domEl) {
+        _onFontFamilyChanged = function () {
+            renderTextFont(domEl);
+        }
+    }
+
+    function renderTextSize(domEl) {
         var cssName;
         switch (Number(getTextSize())) {
             case 1:
@@ -168,32 +227,45 @@
             domEl.style["font-size"] = cssName;
     }
 
-    function displayTextFont(domEl) {
-        domEl.style.fontFamily = getFontFamily();
+    function renderTextFont(domEl) {
+        domEl.style.fontFamily = getTextFont();
     }
 
-    function getTextSize() {
-        return ReadabilityAccount.getState("textSize") || 2; //hardcoded default
-    }
+
+
 
     WinJS.Namespace.define("GeneralLayout", {
+        // Theme Styles
         themeStyles: themeStyles,
         toggleThemeStyle: toggleThemeStyle,
         getThemeStyle: getThemeStyle,
         renderThemeStyle: renderThemeStyle,
+
+        // Utillity
         textToast: textToast,
+        createArticleTileNotification: createArticleTileNotification,
         showProgress: showProgress,
         hideProgress: hideProgress,
         printTime: printTime,
+        setAppBar: setAppBar,
+        setArchiveButton: setArchiveButton,
+
+        // Scroll state
         saveScrollState: saveScrollState,
         loadScrollState: loadScrollState,
         clearScrollState: clearScrollState,
+
+        // Text properties
         setTextSize: setTextSize,
-        displayTextSize: displayTextSize,
-        getTextSize: getTextSize,
-        setOnTextSizeChanged: setOnTextSizeChanged,
-        displayTextFont: displayTextFont,
         setTextFont: setTextFont,
-        getFontFamily: getFontFamily
+
+        renderTextSize: renderTextSize,
+        renderTextFont: renderTextFont,
+
+        getTextSize: getTextSize,
+        getTextFont: getTextFont,
+
+        registerForTextSizeChanged: registerForTextSizeChanged,
+        registerForTextFontChanged: registerForTextFontChanged
     });
 })()

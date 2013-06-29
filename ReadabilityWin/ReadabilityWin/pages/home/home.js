@@ -20,26 +20,30 @@ function onImgLoad(imgEl) {
 
     WinJS.UI.Pages.define("/pages/home/home.html", {
         ready: function (element, options) {
-            Windows.UI.Notifications.TileUpdateManager.createTileUpdaterForApplication().clear();
-            // initialize appbar
-            var appbar = document.getElementById("appbar");
-            appbar.winControl.showCommands(["logoutButton", "refreshButton", "settingsButton"], false);
-            appbar.winControl.hideCommands(["openWebButton", "showArchiveButton", "archiveArticleButton", "deleteArticleButton"], false);
-
-            document.getElementById("logoutButton").onclick = this.logout.bind(this);
-            //document.getElementById("showArchiveButton").winControl.label =
-            //    ReadabilityAccount.getState("showArchive") ? "Hide archive" : "Show archive";
-            document.getElementById("showArchiveButton").onclick = this.toggleShowArchive.bind(this);
-            document.getElementById("refreshButton").onclick = this.refresh.bind(this);
-            document.getElementById("settingsButton").onclick = function (e) {
-                WinJS.UI.SettingsFlyout.showSettings("optionsSettingsFlyout", "/pages/optionsFlyout/optionsFlyout.html");
-            }
+            GeneralLayout.setAppBar({
+                "logoutButton": function () {
+                    ReadabilityAccount.logout()
+                        .done((function () {
+                            this.showLogin();
+                        }).bind(this), function (err) {
+                            //don't worry about errors logging out--the only thing that will fail is resetting the cache
+                        });
+                }.bind(this),
+                "refreshButton": function () {
+                    this.getDisplayBookmarks(true);
+                }.bind(this),
+                "settingsButton": function (e) {
+                    WinJS.UI.SettingsFlyout.showSettings("optionsSettingsFlyout", "/pages/optionsFlyout/optionsFlyout.html");
+                }
+            });
 
             if (!ReadabilityAccount.isAuthorized()) {
                 this.showLogin();
             } else {
                 this.initialize();
             }
+
+            Windows.UI.Notifications.TileUpdateManager.createTileUpdaterForApplication().clear();
         },
 
         showLogin: function () {
@@ -100,25 +104,6 @@ function onImgLoad(imgEl) {
             });
         },
 
-        logout: function () {
-            ReadabilityAccount.logout()
-                .done((function () {
-                    this.showLogin();
-                }).bind(this), function (err) {
-                    //don't worry about errors logging out--the only thing that will fail is resetting the cache
-                });
-        },
-
-        toggleShowArchive: function () {
-            ReadabilityAccount.editState("showArchive",
-                !ReadabilityAccount.getState("showArchive"));
-
-            document.getElementById("showArchiveButton").winControl.label =
-                ReadabilityAccount.getState("showArchive") ? "Hide archive" : "Show archive";
-
-            this.getDisplayBookmarks(true);
-        },
-
         getDisplayBookmarks: function (refresh) {
             GeneralLayout.showProgress();
             ReadabilityAccount.getBookmarks(refresh).done(
@@ -177,16 +162,6 @@ function onImgLoad(imgEl) {
                     GeneralLayout.textToast(errorText, true);
                     GeneralLayout.hideProgress()
                 });
-        },
-
-        refresh: function () {
-            this.getDisplayBookmarks(true);
-        },
-
-        unload: function () {
-            document.getElementById("logoutButton").onclick = null;
-            //document.getElementById("showArchiveButton").onclick = null;
-            document.getElementById("refreshButton").onclick = null;
         },
 
         updateLayout: function (element, viewState, lastViewState) {

@@ -42,7 +42,7 @@
                 fontSelector.appendChild(optionEl);
             }
 
-            fontSelector.value = GeneralLayout.getFontFamily();
+            fontSelector.value = GeneralLayout.getTextFont();
 
             fontSelector.onchange = function (e) {
                 GeneralLayout.setTextFont(document.getElementById("fontFamilySelector").value);
