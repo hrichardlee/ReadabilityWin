@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="14514RichardLee.Readabilityunofficial" Version="1.0.0.10" Publisher="CN=rilee" />
+  <Identity Name="14514RichardLee.Readabilityunofficial" Version="1.0.0.12" Publisher="CN=9D7EC078-F264-492B-B38B-A10928C121F6" />
   <Properties>
     <DisplayName>Readability (unofficial)</DisplayName>
     <PublisherDisplayName>Richard Lee</PublisherDisplayName>

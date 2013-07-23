@@ -74,7 +74,11 @@
                     document.getElementById("headerPageSubtitle").innerText = currentArticle.subtitle;
                     var dateMatched = /(\d\d\d\d)-(\d\d)-(\d\d)/.exec(currentArticle.datePublished);
                     var formatter = Windows.Globalization.DateTimeFormatting.DateTimeFormatter("year day month");
-                    document.getElementById("datepublished").innerText = "Published " + formatter.format(new Date(dateMatched[1], dateMatched[2], dateMatched[3]));
+                    if (dateMatched !== null && dateMatched.length >= 4) {
+                        var rawDate = new Date(dateMatched[1], dateMatched[2], dateMatched[3]);
+                        if (!isNaN(rawDate.getTime()))
+                            document.getElementById("datepublished").innerText = "Published " + formatter.format(rawDate);
+                    }
 
                     document.getElementById("actualContent").innerHTML = content;
                     GeneralLayout.hideProgress();

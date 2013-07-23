@@ -92,6 +92,9 @@
     }
 
     function printTime(time) {
+        if (!time)
+            return "";
+
         var minutes = time.getMinutes();
         minutes = minutes < 10 ? "0" + minutes : minutes;
         var hours = time.getHours();
@@ -172,7 +175,7 @@
     var _defaultFontFamily = "Cambria";
 
     function getTextSize() {
-        return ReadabilityAccount.getState("textSize") || 2; //hardcoded default
+        return ReadabilityAccount.getState("textSize") || 5; //hardcoded default
     }
 
     function getTextFont() {
@@ -203,26 +206,16 @@
     }
 
     function renderTextSize(domEl) {
-        var cssName;
-        switch (Number(getTextSize())) {
-            case 1:
-                cssName = "small";
-                break;
-            case 2:
-                cssName = "medium";
-                break;
-            case 3:
-                cssName = "large"
-                break;
-            case 4:
-                cssName = "x-large";
-                break;
-            case 5:
-                cssName = "xx-large";
-                break;
+        var fontSizes = [8, 10, 12, 14, 16, 20, 24, 32];
+        var columnSizes = [255, 319, 382, 447, 511, 638, 766, 1021];
+        columnSizes = [221, 277, 332, 387, 443, 553, 664, 885];
+
+        var index = Number(getTextSize())
+
+        if (domEl) {
+            domEl.style["font-size"] = fontSizes[index - 1] + "px";
+            domEl.style["column-width"] = columnSizes[index - 1] + "px";
         }
-        if (domEl)
-            domEl.style["font-size"] = cssName;
     }
 
     function renderTextFont() {
