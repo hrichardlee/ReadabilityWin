@@ -11,6 +11,7 @@
     column-fill: auto;
     box-sizing: border-box;
     padding-bottom: 50px;
+    padding-top: 50px;
     padding-left: 120px;
     padding-right: 120px;
     position: relative;
@@ -19,8 +20,10 @@
     word-wrap: break-word;
 }
 
-#content #subtitle {
+#content #titleSection {
     font-weight: bold;
+	height: 100%;
+	margin-top: 200px;
 }
 
     /* this is a hack, but it is recommended by MSDN */
@@ -115,4 +118,30 @@
             height: 50px;
             margin-right: 0;
         }
+}
+
+.article {
+	height: 100%;
+}
+
+
+#articleBackButton {
+    float: left;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 28px;
+    margin-right: 28px;
+}
+
+#headerPageTitle {
+    float: left;
+    margin-top: calc(1.5em + 10px);
+    font-style: italic;
+}
+
+#headerPageSubtitle {
+    float: right;   
+    margin-top: calc(1.5em + 10px);
+    margin-right: 28px;
+    font-style: italic;
 }

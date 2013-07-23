@@ -199,6 +199,7 @@
                             title: b.article.title,
                             author: b.article.author || "",
                             domain: b.article.domain || "",
+                            datePublished: b.article.date_published || "",
                             articleHref: b.article_href,
                             leadImageSrc: b.article.lead_image_url,
                             leadImageUrl: b.article.lead_image_url

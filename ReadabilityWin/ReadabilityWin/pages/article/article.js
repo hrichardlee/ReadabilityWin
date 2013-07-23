@@ -65,11 +65,17 @@
             archived = false;
             currentArticle = options.articleSummary;
             document.getElementById("pageTitle").innerText = currentArticle.title;
+            document.getElementById("headerPageTitle").innerText = currentArticle.title;
 
             GeneralLayout.showProgress();
             ReadabilityAccount.getArticleContent(currentArticle.bookmarkId)
                 .then(function (content) {
                     document.getElementById("subtitle").innerText = currentArticle.subtitle;
+                    document.getElementById("headerPageSubtitle").innerText = currentArticle.subtitle;
+                    var dateMatched = /(\d\d\d\d)-(\d\d)-(\d\d)/.exec(currentArticle.datePublished);
+                    var formatter = Windows.Globalization.DateTimeFormatting.DateTimeFormatter("year day month");
+                    document.getElementById("datepublished").innerText = "Published " + formatter.format(new Date(dateMatched[1], dateMatched[2], dateMatched[3]));
+
                     document.getElementById("actualContent").innerHTML = content;
                     GeneralLayout.hideProgress();
 
@@ -110,6 +116,12 @@
             });
 
             GeneralLayout.setArchiveButton(true);
+
+            document.getElementById("articleBackButton").onclick = function () {
+                document.getElementById("appbar").winControl.hide();
+                document.getElementById("topappbar").winControl.hide();
+                WinJS.Navigation.navigate("/pages/home/home.html");
+            };
         },
 
         archiveArticle: function () {
