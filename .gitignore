@@ -8,8 +8,13 @@ Thumbs.db
 *.sdf
 *.opensdf
 [Dd]ebug/
+[Aa]rm/
+x64/
+[Rr]elease/
 ipch/
 [Oo]bj/
 [Bb]in/
 [Bb]ld/
 [Aa]pp[Pp]ackages/
+Package.StoreAssociation.xml
+ReadabilityWin_Storekey.pfx
