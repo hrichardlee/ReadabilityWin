@@ -203,39 +203,16 @@
 
     function registerForTextSizeChanged(domEl) {
         _onTextSizeChanged = function () {
-            renderTextSize(domEl);
-        }
+            if (this.renderTextSize)
+                this.renderTextSize(domEl);
+        }.bind(this);
     }
 
-    function renderTextSize(domEl) {
-        var fontSizes = [8, 10, 12, 14, 16, 20, 24, 32];
-        var columnSizes = [255, 319, 382, 447, 511, 638, 766, 1021];
-        columnSizes = [221, 277, 332, 387, 443, 553, 664, 885];
-
-        var index = Number(getTextSize())
-
-        if (domEl) {
-            domEl.style["font-size"] = fontSizes[index - 1] + "px";
-
-            if (Windows.UI.ViewManagement.ApplicationView.value == Windows.UI.ViewManagement.ApplicationViewState.fullScreenLandscape
-                || Windows.UI.ViewManagement.ApplicationView.value == Windows.UI.ViewManagement.ApplicationViewState.filled) {
-
-                var columnWidth = columnSizes[index - 1] + 160;
-                var columnGap = columnWidth * 0.1;
-
-                domEl.style["column-width"] = columnWidth + "px";
-                domEl.style["column-gap"] = columnGap + "px";
-                domEl.style["width"] = (columnWidth + columnGap) + "px";
-            }
-        }
-    }
+    var renderTextSize;
 
     function renderTextFont() {
         document.getElementsByTagName("body")[0].style.fontFamily = getTextFont();
     }
-
-
-
 
     WinJS.Namespace.define("GeneralLayout", {
         // Theme Styles

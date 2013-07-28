@@ -1,44 +1,48 @@
-﻿#contentSection {
+﻿/***********************/
+/** Layout formatting **/
+
+.article {
+    height: 100%;
+}
+
+#contentSection {
     width: 100%;
     height: 100%;
     overflow-x: auto;
     overflow-y: hidden;
 }
 
-#helper {
-    height: 100%;
-    width: 1600px;
-    /* This is how wide the container needs to be for titleSection and content to float side by side*/
-}
+    #contentSection #helper {
+        height: 100%;
+        width: 1600px;
+        /* This is how wide the container needs to be for titleSection and content to float side by side*/
+    }
 
-#content {
-    height: 100%;
-    column-fill: auto;
-    box-sizing: border-box;
-    padding-bottom: 50px;
-    padding-top: 50px;
-    padding-left: 120px;
-    padding-right: 120px;
-    position: relative;
-    -ms-user-select: text;
+    #contentSection #content {
+        height: 100%;
+        column-fill: auto;
+        box-sizing: border-box;
+        padding-bottom: 50px;
+        padding-top: 50px;
+        position: relative;
+        -ms-user-select: text;
+        margin-left: 350px;
+        word-wrap: break-word;
+    }
 
-    margin-left: 350px;
+    #contentSection #titleSection {
+        font-weight: bold;
+        height: 100%;
+        width: 400px;
+        float: left;
+        padding-top: 200px;
+        padding-bottom: 50px;
+        padding-left: 100px;
+        padding-right: 50px;
+    }
 
-    word-wrap: break-word;
-}
-
- #titleSection {
-    font-weight: bold;
-	height: 100%;
-    width: 350px;
-    float: left;
-    padding-top: 200px;
-    padding-bottom: 50px;
-    padding-left: 100px;
-}
-
-    /* this is a hack, but it is recommended by MSDN */
-    #content:after {
+    #contentSection #content:after {
+        /* this is a hack, but it is recommended by MSDN */
         content: '';
         background-color: transparent;
         float: right;
@@ -46,20 +50,60 @@
         margin-right: -120px;
     }
 
-    /* text/content formatting */
-    #content p {
+
+
+    /*****************************************/
+    /** Layout formatting for portrait mode **/
+    #contentSection.portraitMode {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+        #contentSection.portraitMode #helper {
+            height: auto;
+            width: auto;
+        }
+
+        #contentSection.portraitMode #content {
+            columns: auto auto;
+            width: auto;
+            padding-bottom: 50px;
+            margin-left: 100px;
+            margin-right: 25px;
+        }
+
+            /* this is a hack, but it is recommended by MSDN */
+            #contentSection.portraitMode #content:after {
+                float: none;
+                display: block;
+                height: 50px;
+                margin-right: 0;
+            }
+
+        #contentSection.portraitMode #titleSection {
+            height: auto;
+            padding-top: 50px;
+            padding-bottom: 25px;
+            float: none;
+        }
+
+
+
+    /*********************/
+    /** Text formatting **/
+    #contentSection #content p {
         text-indent: 2em;
     }
 
-        #content p:first-of-type {
+        #contentSection #content p:first-of-type {
             text-indent: 0em;
         }
 
-    #content a {
+    #contentSection #content a {
         color: cornflowerblue;
     }
 
-    #content img {
+    #contentSection #content img {
         display: block;
         margin-left: auto;
         margin-right: auto;
@@ -67,14 +111,14 @@
         margin-bottom: 0.5em;
     }
 
-    #content blockquote {
+    #contentSection #content blockquote {
         text-indent: 0px;
         margin-left: 2em;
         margin-top: 0.5em;
         margin-bottom: 0.5em;
     }
 
-    #content p > big {
+    #contentSection #content p > big {
         margin-left: -1.33em; /* usually 2em of text-indent, but because we adjusted font-size */
         font-size: 150%;
         margin-top: 1.5em;
@@ -82,12 +126,9 @@
     }
 
 
-    #content p:first-of-type > big {
-        margin-left: 0;
-    }
 
 
-@media screen and (-ms-view-state: snapped) {
+/*@media screen and (-ms-view-state: snapped) {
     #contentSection {
         overflow-y: auto;
         overflow-x: hidden;
@@ -98,19 +139,26 @@
         padding-bottom: 0px;
         padding-left: 20px;
         padding-right: 15px;
+        margin-left: 0;
     }
 
-        /* this is a hack, but it is recommended by MSDN */
-        #content:after {
-            float: none;
-            display: block;
-            height: 20px;
-            margin-right: 0;
-        }
-        
-    #content #titleSection {
-	    height: auto;
-        margin-bottom: 100px;
+    #helper {
+        height: auto;
+        width: auto;
+    }
+
+    #content:after {
+        float: none;
+        display: block;
+        height: 20px;
+        margin-right: 0;
+    }
+
+    #titleSection {
+        height: auto;
+        padding-top: 50px;
+        padding-bottom: 25px;
+        float: none;
     }
 }
 
@@ -120,32 +168,38 @@
         overflow-x: hidden;
     }
 
+    #helper {
+        height: auto;
+        width: auto;
+    }
+
     #content {
         columns: auto auto;
+        width: auto;
         padding-bottom: 50px;
         padding-left: 100px;
         padding-right: 25px;
+        margin-left: 0;
     }
 
-        /* this is a hack, but it is recommended by MSDN */
         #content:after {
             float: none;
             display: block;
             height: 50px;
             margin-right: 0;
         }
-    #content #titleSection {
-	    height: auto;
-        margin-bottom: 100px;
+
+    #titleSection {
+        height: auto;
+        padding-top: 50px;
+        padding-bottom: 25px;
+        float: none;
     }
-}
+}*/
 
-.article {
-	height: 100%;
-}
-
-
-#articleBackButton {
+/*************/
+/** Top appbar **/
+#topappbar #articleBackButton {
     float: left;
     margin-top: 1em;
     margin-bottom: 1em;
@@ -153,14 +207,14 @@
     margin-right: 28px;
 }
 
-#headerPageTitle {
+#topappbar #headerPageTitle {
     float: left;
     margin-top: calc(1.5em + 10px);
     font-style: italic;
 }
 
-#headerPageSubtitle {
-    float: right;   
+#topappbar #headerPageSubtitle {
+    float: right;
     margin-top: calc(1.5em + 10px);
     margin-right: 28px;
     font-style: italic;
