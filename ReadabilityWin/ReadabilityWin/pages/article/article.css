@@ -5,9 +5,14 @@
     overflow-y: hidden;
 }
 
+#helper {
+    height: 100%;
+    width: 1600px;
+    /* This is how wide the container needs to be for titleSection and content to float side by side*/
+}
+
 #content {
     height: 100%;
-    column-width: 400px;
     column-fill: auto;
     box-sizing: border-box;
     padding-bottom: 50px;
@@ -17,13 +22,19 @@
     position: relative;
     -ms-user-select: text;
 
+    margin-left: 350px;
+
     word-wrap: break-word;
 }
 
-#content #titleSection {
+ #titleSection {
     font-weight: bold;
 	height: 100%;
-	margin-top: 100px;
+    width: 350px;
+    float: left;
+    padding-top: 200px;
+    padding-bottom: 50px;
+    padding-left: 100px;
 }
 
     /* this is a hack, but it is recommended by MSDN */
@@ -96,6 +107,11 @@
             height: 20px;
             margin-right: 0;
         }
+        
+    #content #titleSection {
+	    height: auto;
+        margin-bottom: 100px;
+    }
 }
 
 @media screen and (-ms-view-state: fullscreen-portrait) {
@@ -118,6 +134,10 @@
             height: 50px;
             margin-right: 0;
         }
+    #content #titleSection {
+	    height: auto;
+        margin-bottom: 100px;
+    }
 }
 
 .article {

@@ -7,25 +7,28 @@
     <script src="article.js"></script>
 </head>
 <body>
-    
+
 
     <div id="topappbar" data-win-control="WinJS.UI.AppBar" data-win-options="{layout:'custom', placement:'top'}">
         <button id="articleBackButton" class="win-backbutton" aria-label="Back" type="button"></button>
-        <p id="headerPageTitle">Title</>
+        <p id="headerPageTitle">
+            Title</>
         <p id="headerPageSubtitle">Subtitle</p>
     </div>
 
 
     <div class="article">
         <section aria-label="Main content" role="main" id="contentSection">
-            <div id="content">
+            <div id="helper">
                 <div id="titleSection">
-					<h2 id="pageTitle">Title</h2>
-					<div id="subtitle">Subtitle</div>
+                    <h2 id="pageTitle">Title</h2>
+                    <div id="subtitle">Subtitle</div>
                     <div id="datepublished"></div>
-				</div>
-				<div id="actualContent"></div>
-			</div>
+                </div>
+                <div id="content">
+                    <div id="actualContent"></div>
+                </div>
+            </div>
         </section>
     </div>
 </body>

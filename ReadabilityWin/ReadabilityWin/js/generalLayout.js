@@ -95,6 +95,8 @@
         if (!time)
             return "";
 
+        time = new Date(time)
+
         var minutes = time.getMinutes();
         minutes = minutes < 10 ? "0" + minutes : minutes;
         var hours = time.getHours();
@@ -206,15 +208,25 @@
     }
 
     function renderTextSize(domEl) {
-        var fontSizes = [8, 10, 12, 14, 16, 20, 24, 32];
+        var fontSizes = [10, 12, 14, 16, 20, 24, 32];
         var columnSizes = [255, 319, 382, 447, 511, 638, 766, 1021];
-        columnSizes = [221, 277, 332, 387, 443, 553, 664, 885];
+        columnSizes = [277, 332, 387, 443, 553, 664, 885];
 
         var index = Number(getTextSize())
 
         if (domEl) {
             domEl.style["font-size"] = fontSizes[index - 1] + "px";
-            domEl.style["column-width"] = columnSizes[index - 1] + "px";
+
+            if (Windows.UI.ViewManagement.ApplicationView.value == Windows.UI.ViewManagement.ApplicationViewState.fullScreenLandscape
+                || Windows.UI.ViewManagement.ApplicationView.value == Windows.UI.ViewManagement.ApplicationViewState.filled) {
+
+                var columnWidth = columnSizes[index - 1] + 160;
+                var columnGap = columnWidth * 0.1;
+
+                domEl.style["column-width"] = columnWidth + "px";
+                domEl.style["column-gap"] = columnGap + "px";
+                domEl.style["width"] = (columnWidth + columnGap) + "px";
+            }
         }
     }
 
