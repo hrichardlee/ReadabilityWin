@@ -15,47 +15,6 @@
         data.setUri(new Windows.Foundation.Uri(currentArticle.fullUrl));
     }
 
-    function resetImages() {
-        var contentDiv = document.getElementById("content");
-        var imgs = contentDiv.getElementsByTagName("img");
-        var resizingFunction = null;
-
-        if (contentDiv.classList.contains("portraitMode")) {
-
-            // assume these are in px
-            var columnWidth = document.defaultView.getComputedStyle(contentDiv, null).getPropertyValue("column-width").slice(0, -2);  // for some bizarre reason, css sets column width as 400, actual is 550
-            columnWidth = columnWidth - 50; // leave a bit of extra room
-            var totalHeight = document.defaultView.getComputedStyle(contentDiv, null).getPropertyValue("height").slice(0, -2);
-            // instead of using the total height, we want the actual total line height of the div
-            var lineHeight = document.defaultView.getComputedStyle(contentDiv, null).getPropertyValue("line-height").slice(0, -2);
-            var columnHeight = totalHeight - (totalHeight % lineHeight) - lineHeight; //minus an additional lineheight because there is a 0.5em margin on top/bottom
-
-            resizingFunction = function (imgEl) {
-                var origAspect = imgEl.width / imgEl.height;
-                if (imgEl.width < 50 && imgEl.height < 50) {
-                    // don't adjust small icons/logos
-                } else if (origAspect > columnWidth / columnHeight) {
-                    imgEl.width = columnWidth;
-                    imgEl.height = columnWidth / origAspect;
-                }
-                else {
-                    imgEl.height = columnHeight;
-                    imgEl.width = columnHeight * origAspect;
-                }
-            }
-        } else {
-            resizingFunction = function (imgEl) {
-                var origAspect = imgEl.width / imgEl.height;
-                imgEl.width = document.defaultView.getComputedStyle(contentDiv, null).getPropertyValue("width").slice(0, -2);
-                imgEl.height = imgEl.width / origAspect;
-            }
-        }
-
-        for (var i = 0; i < imgs.length; i++) {
-            resizingFunction(imgs[i]);
-        }
-    }
-
     WinJS.UI.Pages.define("/pages/article/article.html", {
         ready: function (element, options) {
             archived = false;
@@ -84,9 +43,9 @@
                     dtm.removeEventListener("datarequested", shareArticle);
                     dtm.addEventListener("datarequested", shareArticle);
 
-                    resetImages();
+                    this.renderTextSize();
 
-                }, function (err) {
+                }.bind(this), function (err) {
                     if (err instanceof Errors.diskError) {  //if it's a generic error, the homepage stuff should create the error
                         GeneralLayout.textToast(err.message, true);
                     }
@@ -96,7 +55,6 @@
             this.setAppBar();
 
             GeneralLayout.renderTextSize = this.renderTextSize;
-            this.renderTextSize();
             GeneralLayout.registerForTextSizeChanged(document.getElementById("content"));
             GeneralLayout.renderTextFont();
 
@@ -109,7 +67,6 @@
             var titleSectionWidth = 350; //hardcoded from CSS
             var leftMargin = 100;
             var rightMargin = 50;
-            //columnSizes = [221, 277, 332, 387, 443, 553, 664, 885];
 
             var index = Number(GeneralLayout.getTextSize())
 
@@ -120,7 +77,8 @@
             var contentSectionEl = document.getElementById("contentSection");
             contentEl.style["font-size"] = fontSizes[index - 1] + "px";
 
-            if (columnWidth * 2 + columnGap * 2 > window.innerWidth) {
+            var portraitMode = columnWidth * 2 + columnGap * 2 > window.innerWidth;
+            if (portraitMode) {
                 // portrait mode
                 contentSectionEl.classList.add("portraitMode");
                 contentSectionEl.classList.remove("landscapeMode");
@@ -143,6 +101,32 @@
                 contentEl.style["width"] = (columnWidth) + "px";
 
                 contentSectionEl.style["margin-left"] = 0;
+            }
+
+
+            // resize images
+            var maxImgWidth = columnWidth - 50; // leave a bit of extra room
+            var columnHeight = window.innerHeight - 100; //100 is hardcoded from css
+            var maxImgHeight = portraitMode ? window.innerHeight - 25 : columnHeight - 50;
+
+            var imgResizingFunction = function (imgEl) {
+                var origAspect = imgEl.width / imgEl.height;
+                if (imgEl.width < 50 && imgEl.height < 50) {
+                    // don't adjust small icons/logos
+                } else if (origAspect > maxImgWidth / maxImgHeight) {
+                    imgEl.width = maxImgWidth;
+                    imgEl.height = maxImgWidth / origAspect;
+                }
+                else {
+                    imgEl.height = maxImgHeight;
+                    imgEl.width = maxImgHeight * origAspect;
+                }
+            }
+
+            // resize images now
+            var imgs = contentEl.getElementsByTagName("img");
+            for (var i = 0; i < imgs.length; i++) {
+                imgResizingFunction(imgs[i]);
             }
         },
 
@@ -239,7 +223,6 @@
 
         updateLayout: function (element, viewState, lastViewState) {
             this.renderTextSize();
-            resetImages();
             GeneralLayout.loadScrollState(document.getElementById("contentSection"));
         },
 

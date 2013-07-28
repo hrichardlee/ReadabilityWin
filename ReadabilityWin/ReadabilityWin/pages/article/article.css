@@ -92,7 +92,7 @@
     /*********************/
     /** Text formatting **/
     #contentSection #content p {
-        text-indent: 2em;
+        text-indent: 1.75em;
     }
 
         #contentSection #content p:first-of-type {
@@ -109,6 +109,9 @@
         margin-right: auto;
         margin-top: 0.5em;
         margin-bottom: 0.5em;
+
+        padding: 5px;
+        border: 1px solid grey;
     }
 
     #contentSection #content blockquote {
