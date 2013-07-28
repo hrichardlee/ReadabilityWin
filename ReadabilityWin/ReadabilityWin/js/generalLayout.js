@@ -208,9 +208,9 @@
     }
 
     function renderTextSize(domEl) {
-        var fontSizes = [10, 12, 14, 16, 20, 24, 32];
+        var fontSizes = [8, 10, 12, 14, 16, 20, 24, 32];
         var columnSizes = [255, 319, 382, 447, 511, 638, 766, 1021];
-        columnSizes = [277, 332, 387, 443, 553, 664, 885];
+        columnSizes = [221, 277, 332, 387, 443, 553, 664, 885];
 
         var index = Number(getTextSize())
 

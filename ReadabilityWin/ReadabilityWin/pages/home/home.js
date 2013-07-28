@@ -153,9 +153,7 @@ function onImgLoad(imgEl) {
                     if (err instanceof XMLHttpRequest) {
                         // if we're unauthorized, go to login
                         if (err.status === 401) {
-                            window.setImmediate(function () {
-                                WinJS.Navigation.navigate("/pages/login/login.html");
-                            });
+                            this.showLogin();
                         } else if (err.status == 0) {
                             errorText = Errors.networkFailureMessage("getting your bookmarks");
                         }
@@ -163,7 +161,7 @@ function onImgLoad(imgEl) {
 
                     GeneralLayout.textToast(errorText, true);
                     GeneralLayout.hideProgress()
-                });
+                }.bind(this));
         },
 
         updateLayout: function (element, viewState, lastViewState) {
