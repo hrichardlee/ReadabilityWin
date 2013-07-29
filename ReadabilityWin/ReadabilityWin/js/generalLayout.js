@@ -201,10 +201,10 @@
         renderTextFont();
     }
 
-    function registerForTextSizeChanged(domEl) {
+    function registerForTextSizeChanged() {
         _onTextSizeChanged = function () {
             if (this.renderTextSize)
-                this.renderTextSize(domEl);
+                this.renderTextSize();
         }.bind(this);
     }
 
@@ -213,6 +213,22 @@
     function renderTextFont() {
         document.getElementsByTagName("body")[0].style.fontFamily = getTextFont();
     }
+
+    function getForcePortrait() {
+        return Windows.Storage.ApplicationData.current.roamingSettings.values["forcePortrait"]; // default is false
+    }
+
+    function toggleForcePortrait() {
+        Windows.Storage.ApplicationData.current.roamingSettings.values["forcePortrait"] =
+            !Windows.Storage.ApplicationData.current.roamingSettings.values["forcePortrait"]
+
+        if (this.renderTextSize)
+            this.renderTextSize();
+    }
+
+
+
+
 
     WinJS.Namespace.define("GeneralLayout", {
         // Theme Styles
@@ -245,6 +261,9 @@
         getTextSize: getTextSize,
         getTextFont: getTextFont,
 
-        registerForTextSizeChanged: registerForTextSizeChanged
+        registerForTextSizeChanged: registerForTextSizeChanged,
+
+        toggleForcePortrait: toggleForcePortrait,
+        getForcePortrait: getForcePortrait
     });
 })()

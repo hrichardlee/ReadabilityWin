@@ -12,7 +12,12 @@
             var themeStyleSwitch = document.getElementById("themeStyleSwitch").winControl;
             if (GeneralLayout.getThemeStyle() === GeneralLayout.themeStyles.light)
                 themeStyleSwitch.checked = true;
-            themeStyleSwitch.onchange = this.toggleThemeStyle;
+            themeStyleSwitch.onchange = GeneralLayout.toggleThemeStyle;
+
+            var forcePortraitSwitch = document.getElementById("forcePortraitSwitch").winControl;
+            if (GeneralLayout.getForcePortrait())
+                forcePortraitSwitch.checked = true;
+            forcePortraitSwitch.onchange = GeneralLayout.toggleForcePortrait.bind(GeneralLayout);
 
             document.getElementById("resetCacheButton").onclick = this.resetCache.bind(this);
 
@@ -47,10 +52,6 @@
             fontSelector.onchange = function (e) {
                 GeneralLayout.setTextFont(document.getElementById("fontFamilySelector").value);
             }
-        },
-
-        toggleThemeStyle: function (e) {
-            GeneralLayout.toggleThemeStyle();
         },
 
         resetCache: function (e) {

@@ -55,7 +55,7 @@
             this.setAppBar();
 
             GeneralLayout.renderTextSize = this.renderTextSize;
-            GeneralLayout.registerForTextSizeChanged(document.getElementById("content"));
+            GeneralLayout.registerForTextSizeChanged();
             GeneralLayout.renderTextFont();
 
             GeneralLayout.createArticleTileNotification(currentArticle.title, currentArticle.leadImageUrl);
@@ -75,7 +75,7 @@
             var titleSectionEl = document.getElementById("titleSection");
             contentEl.style["font-size"] = fontSizes[index - 1] + "px";
 
-            var portraitMode = columnWidth * 2 + columnGap * 2 > window.innerWidth;
+            var portraitMode = GeneralLayout.getForcePortrait() || (columnWidth * 2 + columnGap * 2 > window.innerWidth);
             if (portraitMode) {
                 // portrait mode
                 contentSectionEl.classList.add("portraitMode");
