@@ -91,6 +91,9 @@
     <Content Include="js\errors.js" />
     <Content Include="js\sha1.js" />
     <Content Include="pages\home\homeLight.css" />
+    <Content Include="pages\login\login.css" />
+    <Content Include="pages\login\login.html" />
+    <Content Include="pages\login\login.js" />
     <Content Include="pages\optionsFlyout\optionsFlyout.css" />
     <Content Include="pages\optionsFlyout\optionsFlyout.html" />
     <Content Include="pages\optionsFlyout\optionsFlyout.js" />

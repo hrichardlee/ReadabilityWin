@@ -7,56 +7,6 @@
     height: 100%;
 }
 
-#loginModalDialog {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(128, 128, 128, 0.5);
-    display: none;
-}
-
-    #loginModalDialog > #loginBox {
-        position: absolute;
-        top: 50%;
-        margin-top: -150px;
-        width: 100%;
-        height: 300px;
-        background-color: rgb(29, 29, 29);
-    }
-
-        #loginModalDialog > #loginBox > #loginBoxContents {
-            width: 440px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-top: 25px;
-        }
-
-            #loginModalDialog > #loginBox > #loginBoxContents > #signupText {
-                margin-bottom: 1em;
-            }
-
-            #loginModalDialog > #loginBox > #loginBoxContents > #loginErrorText {
-                color: orangered;
-                margin-top: 0.5em;
-            }
-
-            #loginModalDialog > #loginBox > #loginBoxContents > label {
-                float: left;
-                width: 120px;
-                margin-top: 10px;
-            }
-
-            #loginModalDialog > #loginBox > #loginBoxContents > input {
-                width: 300px;
-            }
-
-            #loginModalDialog > #loginBox > #loginBoxContents > button {
-                margin-top: 15px;
-                margin-left: 220px;
-                width: 200px;
-            }
 
 #readingList {
     height: 100%;
@@ -122,36 +72,6 @@
 
 
 @media screen and (-ms-view-state: snapped) {
-    #loginModalDialog > #loginBox {
-        margin-top: -160px;
-        height: 320px;
-    }
-
-        #loginModalDialog > #loginBox > #loginBoxContents {
-            margin-left: 20px;
-            margin-right: 20px;
-            width: calc(100% - 40px);
-            position: relative;
-        }
-
-            #loginModalDialog > #loginBox > #loginBoxContents > label {
-                margin-top: 0;
-                float: none;
-                display: block;
-                width: auto;
-            }
-
-            #loginModalDialog > #loginBox > #loginBoxContents > input {
-                width: 100%;
-            }
-
-            #loginModalDialog > #loginBox > #loginBoxContents > button {
-                margin-left: 0;
-                margin-right: 0;
-                margin-top: 10px;
-                float: right;
-            }
-
     #readingList {
         margin-left: 0px;
         margin-bottom: 0px;

@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>login</title>
+
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+
+    <link href="login.css" rel="stylesheet" />
+    <script src="login.js"></script>
+</head>
+<body>
+    <div id="loginModalDialog">
+        <div id="loginBox">
+            <div id="loginBoxContents">
+                <h2>Login to Readability</h2>
+                <p id="signupText">If you don't have an account, <a href="http://readability.com">sign up.</a></p>
+                <label for="loginUsername">Username: </label>
+                <input type="text" id="loginUsername" />
+                <label for="loginPassword">Password: </label>
+                <input type="password" id="loginPassword" />
+                <button id="loginButton">Grant access</button>
+                <div class="clearDiv"></div>
+                <p id="loginErrorText"></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

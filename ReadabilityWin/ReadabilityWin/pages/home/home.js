@@ -24,6 +24,7 @@ function onImgLoad(imgEl) {
                 "logoutButton": function () {
                     ReadabilityAccount.logout()
                         .done((function () {
+                            document.getElementById("appbar").winControl.hide()
                             this.showLogin();
                         }).bind(this), function (err) {
                             //don't worry about errors logging out--the only thing that will fail is resetting the cache
@@ -49,45 +50,13 @@ function onImgLoad(imgEl) {
         },
 
         showLogin: function () {
-            var usernameField = document.getElementById("loginUsername");
-            var passwordField = document.getElementById("loginPassword");
-            var loginErrorText = document.getElementById("loginErrorText");
 
-            usernameField.oninput = function (e) { loginErrorText.innerText = ""; };
-            passwordField.oninput = function (e) { loginErrorText.innerText = ""; };
-            document.getElementById("loginModalDialog").style["display"] = "block";
-            usernameField.focus();
-
-            document.getElementById("loginButton").onclick = (function (e) {
-                var username = usernameField.value;
-                var password = passwordField.value;
-
-                if (!username || !password) {
-                    loginErrorText.innerText = "You must enter a username and password.";
-                    usernameField.focus();
-                } else {
-                    GeneralLayout.showProgress();
-                    ReadabilityAccount.login(username, password)
-                        .done((function () {
-                            document.getElementById("loginModalDialog").style["display"] = "none";
-                            this.initialize();
-                        }).bind(this),
-                        function (err) {
-                            var errorText = Errors.genericMessage("logging you in");
-                            if (err instanceof XMLHttpRequest) {
-                                if (err.status == 0) {
-                                    errorText = Errors.networkFailureMessage("logging you in");
-                                } else if (err.status == 401) {
-                                    errorText = "Credentials were not valid.";
-                                    passwordField.value = "";
-                                }
-                            }
-                            loginErrorText.innerText = errorText;
-                            GeneralLayout.hideProgress();
-                            usernameField.focus();
-                        });
-                }
-            }).bind(this);
+            WinJS.Application.addEventListener("loginComplete", function () {
+                document.getElementById("login").style["display"] = "none";
+                this.initialize();
+            }.bind(this), false);
+            document.getElementById("login").style["display"] = "block";
+            WinJS.Application.queueEvent({ type: "loginDisplay" });
         },
 
         initialize: function () {
