@@ -149,5 +149,6 @@
     float: right;
     margin-top: calc(1.5em + 10px);
     margin-right: 28px;
+    margin-bottom: 1.5em;
     font-style: italic;
 }

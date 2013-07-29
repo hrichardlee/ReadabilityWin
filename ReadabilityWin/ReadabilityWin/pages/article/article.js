@@ -62,8 +62,8 @@
         },
 
         renderTextSize: function () {
-            var fontSizes = [8, 10, 12, 14, 16, 20, 24, 32];
-            var columnSizes = [255, 319, 382, 447, 511, 638, 766, 1021];
+            var fontSizes = [10, 12, 14, 16, 20, 24, 32, 40];
+            var columnSizes = [319, 382, 447, 511, 638, 766, 1021, 1260];
 
             var index = Number(GeneralLayout.getTextSize())
 
@@ -93,6 +93,9 @@
 
                 //undo landscape mode stuff
                 contentSectionEl.classList.remove("landscapeMode");
+                contentEl.style["column-width"] = "auto";
+                contentEl.style["column-gap"] = "auto";
+                document.getElementById("helper").style["width"] = "auto"; //weird heuristic here...
             } else {
                 // landscape mode
                 contentSectionEl.classList.add("landscapeMode");
@@ -100,6 +103,8 @@
                 contentEl.style["column-width"] = columnWidth + "px";
                 contentEl.style["column-gap"] = columnGap + "px";
                 contentEl.style["width"] = (columnWidth) + "px";
+
+                document.getElementById("helper").style["width"] = columnWidth * 3 + "px"; //weird heuristic here...
 
                 //undo portrait mode stuff
                 contentSectionEl.classList.remove("portraitMode");
