@@ -14,8 +14,7 @@
 
     #contentSection #helper {
         height: 100%;
-        width: 1600px;
-        /* This is how wide the container needs to be for titleSection and content to float side by side*/
+        width: 2000px; /* This is how wide the container needs to be for titleSection and content to float side by side*/
     }
 
     #contentSection #content {
@@ -33,7 +32,6 @@
     #contentSection #titleSection {
         font-weight: bold;
         height: 100%;
-        width: 400px;
         float: left;
         padding-top: 200px;
         padding-bottom: 50px;
@@ -55,8 +53,8 @@
     /*****************************************/
     /** Layout formatting for portrait mode **/
     #contentSection.portraitMode {
-        overflow-y: auto;
         overflow-x: hidden;
+        overflow-y: auto;
     }
 
         #contentSection.portraitMode #helper {
@@ -68,8 +66,8 @@
             columns: auto auto;
             width: auto;
             padding-bottom: 50px;
-            margin-left: 100px;
-            margin-right: 25px;
+            padding-top: 0;
+            margin-left: 0; /* in portrait mode, left margin/padding gets set programmatically on contentSection */
         }
 
             /* this is a hack, but it is recommended by MSDN */
@@ -84,7 +82,10 @@
             height: auto;
             padding-top: 50px;
             padding-bottom: 25px;
+            padding-right: 0;
+            width: auto;
             float: none;
+            padding-left: 0; /* in portrait mode, left margin/padding gets set programmatically on contentSection */
         }
 
 
@@ -127,78 +128,6 @@
         margin-top: 1.5em;
         margin-bottom: 0em;
     }
-
-
-
-
-/*@media screen and (-ms-view-state: snapped) {
-    #contentSection {
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    #content {
-        columns: auto auto;
-        padding-bottom: 0px;
-        padding-left: 20px;
-        padding-right: 15px;
-        margin-left: 0;
-    }
-
-    #helper {
-        height: auto;
-        width: auto;
-    }
-
-    #content:after {
-        float: none;
-        display: block;
-        height: 20px;
-        margin-right: 0;
-    }
-
-    #titleSection {
-        height: auto;
-        padding-top: 50px;
-        padding-bottom: 25px;
-        float: none;
-    }
-}
-
-@media screen and (-ms-view-state: fullscreen-portrait) {
-    #contentSection {
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    #helper {
-        height: auto;
-        width: auto;
-    }
-
-    #content {
-        columns: auto auto;
-        width: auto;
-        padding-bottom: 50px;
-        padding-left: 100px;
-        padding-right: 25px;
-        margin-left: 0;
-    }
-
-        #content:after {
-            float: none;
-            display: block;
-            height: 50px;
-            margin-right: 0;
-        }
-
-    #titleSection {
-        height: auto;
-        padding-top: 50px;
-        padding-bottom: 25px;
-        float: none;
-    }
-}*/
 
 /*************/
 /** Top appbar **/

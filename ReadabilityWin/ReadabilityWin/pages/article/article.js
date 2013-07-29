@@ -64,9 +64,6 @@
         renderTextSize: function () {
             var fontSizes = [8, 10, 12, 14, 16, 20, 24, 32];
             var columnSizes = [255, 319, 382, 447, 511, 638, 766, 1021];
-            var titleSectionWidth = 350; //hardcoded from CSS
-            var leftMargin = 100;
-            var rightMargin = 50;
 
             var index = Number(GeneralLayout.getTextSize())
 
@@ -75,32 +72,41 @@
 
             var contentEl = document.getElementById("content");
             var contentSectionEl = document.getElementById("contentSection");
+            var titleSectionEl = document.getElementById("titleSection");
             contentEl.style["font-size"] = fontSizes[index - 1] + "px";
 
             var portraitMode = columnWidth * 2 + columnGap * 2 > window.innerWidth;
             if (portraitMode) {
                 // portrait mode
                 contentSectionEl.classList.add("portraitMode");
-                contentSectionEl.classList.remove("landscapeMode");
 
-                var maxWidth = window.innerWidth - leftMargin - rightMargin;
-                if (columnWidth > maxWidth) {
-                    columnWidth = maxWidth;
-                } else {
-                    leftMargin = ((window.innerWidth - columnWidth) * 2 / 3) - leftMargin;
-                    contentSectionEl.style["margin-left"] = leftMargin + "px";
+                var minLeftMargin = 20; //hardcoded default
+                var leftMargin = (window.innerWidth - columnWidth) * 2 / 3;
+                if (leftMargin < minLeftMargin) {
+                    leftMargin = minLeftMargin;
+                    columnWidth = window.innerWidth - (leftMargin * 2);
                 }
+                contentSectionEl.style["padding-left"] = leftMargin + "px";
+                contentSectionEl.style["width"] = (window.innerWidth - leftMargin) + "px";
                 contentEl.style["width"] = columnWidth + "px";
+                titleSectionEl.style["width"] = columnWidth + "px";
+
+                //undo landscape mode stuff
+                contentSectionEl.classList.remove("landscapeMode");
             } else {
                 // landscape mode
-                contentSectionEl.classList.remove("portraitMode");
                 contentSectionEl.classList.add("landscapeMode");
 
                 contentEl.style["column-width"] = columnWidth + "px";
                 contentEl.style["column-gap"] = columnGap + "px";
                 contentEl.style["width"] = (columnWidth) + "px";
 
-                contentSectionEl.style["margin-left"] = 0;
+                //undo portrait mode stuff
+                contentSectionEl.classList.remove("portraitMode");
+                contentSectionEl.style["padding-left"] = 0;
+                contentSectionEl.style["width"] = "auto";
+
+                titleSectionEl.style["width"] = "400px"; //hardcoded default
             }
 
 
