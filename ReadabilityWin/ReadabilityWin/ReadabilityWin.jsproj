@@ -104,6 +104,9 @@
     <Content Include="pages\home\home.html" />
     <Content Include="pages\home\home.js" />
     <Content Include="default.html" />
+    <Content Include="pages\shareTarget\shareTarget.css" />
+    <Content Include="pages\shareTarget\shareTarget.html" />
+    <Content Include="pages\shareTarget\shareTarget.js" />
     <None Include="ReadabilityWin_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

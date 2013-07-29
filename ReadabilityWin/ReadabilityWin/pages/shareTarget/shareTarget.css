@@ -1,0 +1,41 @@
+﻿div.shareTarget {
+    padding-left: 80px;
+    padding-top: 10px;
+
+    width: 100%;
+    height: 100%;
+}
+
+#message {
+    padding-right: 80px;
+    padding-bottom: 10px;
+}
+R
+#login {
+    display: none;
+}
+
+
+
+#mainProgress {
+    display: none;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+
+@media screen and (-ms-view-state: snapped) {
+    .shareTarget section[role=main] {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+@media screen and (-ms-view-state: fullscreen-portrait) {
+    .shareTarget section[role=main] {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}

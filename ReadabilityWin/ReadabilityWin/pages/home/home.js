@@ -50,7 +50,6 @@ function onImgLoad(imgEl) {
         },
 
         showLogin: function () {
-
             WinJS.Application.addEventListener("loginComplete", function () {
                 document.getElementById("login").style["display"] = "none";
                 this.initialize();

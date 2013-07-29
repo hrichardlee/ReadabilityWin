@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>shareTarget</title>
+
+    <!-- WinJS references -->
+    <link rel="stylesheet" href="//Microsoft.WinJS.1.0/css/ui-light.css" />
+    <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+
+    <!-- Readability references (from default.html) -->
+    <script src="/js/errors.js"></script>
+    <script src="/js/sha1.js"></script>
+    <script src="/js/oauth.js"></script>
+    <script src="/js/keys.js"></script>
+    <script src="/js/readabilityAccount.js"></script>
+    <script src="/js/generalLayout.js"></script>
+
+    <link href="shareTarget.css" rel="stylesheet" />
+    <script src="shareTarget.js"></script>
+</head>
+<body>
+    <progress id="mainProgress"></progress>
+    <div class="shareTarget fragment win-content">
+        <div id="message"></div>
+        <input class="win-ui-light" id="continueButton" type="button" value="Continue" />
+        <div id="login" data-win-control="WinJS.UI.HtmlControl" data-win-options="{uri: '/pages/login/login.html'}"></div>
+    </div>
+</body>
+</html>

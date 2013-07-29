@@ -19,6 +19,13 @@
         <DefaultTile WideLogo="images\wide-logo.png" ShortName="Readability" ShowName="wideLogoOnly" />
         <SplashScreen Image="images\splash-screen.png" BackgroundColor="#FFFFFF" />
       </VisualElements>
+      <Extensions>
+        <Extension Category="windows.shareTarget" StartPage="pages/shareTarget/shareTarget.html">
+          <ShareTarget>
+            <DataFormat>URI</DataFormat>
+          </ShareTarget>
+        </Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>
