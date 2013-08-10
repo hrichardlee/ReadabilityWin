@@ -6,11 +6,6 @@
     WinJS.Application.addEventListener("loginDisplay", loginDisplay, false);
 
     function loginDisplay(e) {
-        // stylesheet needs to get added dynamically so it doesn't mess up the host page
-        var styleSheetDiv = document.createElement("div");
-        styleSheetDiv.innerHTML = toStaticHTML("<link href=\"//Microsoft.WinJS.1.0/css/ui-dark.css\" rel=\"stylesheet\" />");
-        document.getElementById("loginModalDialog").appendChild(styleSheetDiv);
-
         var usernameField = document.getElementById("loginUsername");
         var passwordField = document.getElementById("loginPassword");
         var loginErrorText = document.getElementById("loginErrorText");
@@ -30,7 +25,6 @@
                 GeneralLayout.showProgress();
                 ReadabilityAccount.login(username, password)
                     .done((function () {
-                        styleSheetDiv.parentNode.removeChild(styleSheetDiv);
                         WinJS.Application.queueEvent({ type: "loginComplete" });
                     }).bind(this),
                     function (err) {

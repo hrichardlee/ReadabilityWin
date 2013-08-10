@@ -10,7 +10,7 @@
     padding-right: 80px;
     padding-bottom: 10px;
 }
-R
+
 #login {
     display: none;
 }
@@ -23,6 +23,11 @@ R
     top: 0;
     width: 100%;
     z-index: 5;
+}
+
+
+#loginModalDialog > #loginBox {
+    background-color: white !important;
 }
 
 
