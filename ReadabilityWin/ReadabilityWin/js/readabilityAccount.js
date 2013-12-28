@@ -2,8 +2,8 @@
     "use strict";
 
     // Public constants
-    var rootUrl = "https://readability.com";
-    var apiRootUrl = "https://readability.com/api/rest/v1/";
+    var rootUrl = "https://www.readability.com";
+    var apiRootUrl = "https://www.readability.com/api/rest/v1/";
     var bookmarksUrl = apiRootUrl + "bookmarks";
 
     // Private variables
